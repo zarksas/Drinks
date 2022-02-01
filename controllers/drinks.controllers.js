@@ -1,9 +1,9 @@
 const Drink = require('../models/Drink.model');
 
 module.exports.drinksControllers = {
-    getDrinks: async(req, res) => {      
+    getDrinks: async(req, res) => {          
         const drinks = await Drink.find({}, {name: 1, price: 1})
-        res.json(drinks)
+        res.json(drinks)      
     },  
 
     getDrinksInStock: async(req, res) => {
@@ -17,16 +17,21 @@ module.exports.drinksControllers = {
     },
 
     postDrinks: async(req, res) => {
-        const { name, price, isInStock, isIncoffeine, volume, description } = req.body;
-        const drinks = await Drink.create({
-            name: name,
-            price: price,
-            isInStock: isInStock,
-            isIncoffeine: isIncoffeine,
-            volume: volume,
-            description: description
-        })
-        res.json(drinks)
+        try {
+            const { name, price, isInStock, isIncoffeine, volume, description } = req.body;
+            const drinks = await Drink.create({
+                name: name,
+                price: price,
+                isInStock: isInStock,
+                isIncoffeine: isIncoffeine,
+                volume: volume,
+                description: description
+            })
+            res.json(drinks)
+        } catch(e) {
+            console.log(`${e} Ошибка при добавлении нового напитка`)
+        }
+       
     },
 
     deleteDrinksById: async(req, res) => {
